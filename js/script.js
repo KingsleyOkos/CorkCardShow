@@ -10,9 +10,7 @@ function setHref(id, url, text) {
 
 function loadIframe(targetId, src) {
   const target = document.getElementById(targetId);
-  if (!target) return;
-  if (!src) return alert("Add the embed URL in data/content.json to enable this embed.");
-
+  if (!target || !src) return;
   const iframe = document.createElement("iframe");
   iframe.loading = "lazy";
   iframe.referrerPolicy = "no-referrer-when-downgrade";
@@ -22,47 +20,99 @@ function loadIframe(targetId, src) {
   iframe.style.height = targetId.includes("eventbrite") ? "720px" : "520px";
   iframe.style.border = "0";
   iframe.style.borderRadius = "12px";
-
   target.replaceChildren(iframe);
-  target.hidden = false;
+}
+
+function renderInstagramPosts(posts){
+  const wrap = document.getElementById("instagram-embed");
+  if (!wrap || !Array.isArray(posts)) return;
+
+  posts.forEach(url => {
+    const bq = document.createElement("blockquote");
+    bq.className = "instagram-media";
+    bq.setAttribute("data-instgrm-permalink", url);
+    bq.setAttribute("data-instgrm-version", "14");
+    bq.style.background = "#FFF";
+    bq.style.border = "0";
+    bq.style.borderRadius = "12px";
+    bq.style.boxShadow = "0 0 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.08)";
+    bq.style.margin = "0";
+    bq.style.minWidth = "260px";
+    bq.style.width = "100%";
+    wrap.appendChild(bq);
+  });
+
+  //loads the embed script 
+    if (!document.querySelector('script[src="https://www.instagram.com/embed.js"]')) {
+    const s = document.createElement("script");
+    s.src = "https://www.instagram.com/embed.js";
+    s.async = true;
+    document.head.appendChild(s);
+  } else if (window.instgrm?.Embeds?.process) {
+    // if script already present, ask it to (re)process
+    window.instgrm.Embeds.process();
+  }
+}
+
+function whenEventbriteReady(cb, tries = 0){
+  if (window.EBWidgets && typeof window.EBWidgets.createWidget === "function") return cb();
+  if (tries > 40) return; // ~4s max
+  setTimeout(() => whenEventbriteReady(cb, tries + 1), 100);
+}
+
+function renderEventbrite(eventId){
+  if (!eventId) return;
+  whenEventbriteReady(() => {
+    window.EBWidgets.createWidget({
+      widgetType: "checkout",
+      eventId: eventId,
+      iframeContainerId: "eventbrite-embed",
+      iframeContainerHeight: 740,
+      onOrderComplete: function(){ /* optional */ }
+    });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  // load config
   let cfg = {};
   try {
     const res = await fetch("./data/content.json", { cache: "no-store" });
     cfg = await res.json();
-  } catch (e) {
-    console.warn("content.json missing or invalid", e);
-  }
+  } catch {}
 
   // About
   if (cfg.about) document.getElementById("about-text").textContent = cfg.about;
 
-  // Instagram
-  setHref("cta-follow-ig", cfg.instagram?.profile, "Follow on Instagram");
-  setHref("link-ig", cfg.instagram?.profile);
-  const igBtn = document.querySelector('[data-load="instagram"]');
-  if (igBtn) igBtn.addEventListener("click", () => {
-    loadIframe("instagram-embed", cfg.instagram?.embedSrc || "");
-    document.getElementById("instagram-placeholder")?.remove();
-  });
+  // Instagram (auto)
+  if (cfg.instagram?.profile) {
+    const link = document.getElementById("link-ig");
+    if (link) link.href = cfg.instagram.profile;
+    const contactIg = document.getElementById("contact-ig");
+    if (contactIg) contactIg.href = cfg.instagram.profile;
+  }
+  if (cfg.instagram?.posts?.length) {
+    renderInstagramPosts(cfg.instagram.posts);
+  }
 
-  // Eventbrite
-  setHref("link-eb", cfg.eventbrite?.url);
-  const ebBtn = document.querySelector('[data-load="eventbrite"]');
-  if (ebBtn) ebBtn.addEventListener("click", () => {
-    loadIframe("eventbrite-embed", cfg.eventbrite?.embedSrc || "");
-  });
+  // Eventbrite (auto)
+  if (cfg.eventbrite?.url) {
+    const el = document.getElementById("link-eb");
+    if (el) el.href = cfg.eventbrite.url;
+  }
+  if (cfg.eventbrite?.eventId) {
+    renderEventbrite(cfg.eventbrite.eventId);
+  }
 
   // Vendor form
   if (cfg.vendorForm?.embedSrc) {
     const form = document.getElementById("vendor-form");
     form.src = cfg.vendorForm.embedSrc;
   }
-  setHref("link-form", cfg.vendorForm?.embedSrc || cfg.vendorForm?.url);
+  const lf = document.getElementById("link-form");
+  if (lf) lf.href = cfg.vendorForm?.embedSrc || cfg.vendorForm?.url;
 
   // Contact
   if (cfg.contact?.email) {
@@ -74,9 +124,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     const p = document.getElementById("contact-phone");
     p.href = `tel:${cfg.contact.phone.replace(/\s+/g,"")}`;
     p.textContent = cfg.contact.phone;
-  }
-  if (cfg.instagram?.profile) {
-    const ig = document.getElementById("contact-ig");
-    ig.href = cfg.instagram.profile;
   }
 });

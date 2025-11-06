@@ -1,0 +1,22 @@
+{
+  "about": "Cork Card Show brings collectors, traders, and fans together...",
+  "instagram": {
+    "profile": "https://instagram.com/corkcardshow",
+    "posts": [
+        "https://www.instagram.com/p/DIbQkWPqHLl/",
+        "https://www.instagram.com/p/DQqo8WfjOWK/",
+        "https://www.instagram.com/reel/DIO3nL8qq_G/"
+    ]
+},
+  "eventbrite": {
+    "url": "https://www.eventbrite.com/e/the-next-big-thing-2025-tickets-1035220100187",
+    "eventId": "1035220100187"
+  },
+  "vendorForm": {
+    "embedSrc": "https://docs.google.com/forms/d/e/1FAIpQLSenPXp129__HNyk4vHScPMrTBFHJT2LgVBIp0XhxaYpwl6VHg/viewform?embedded=true"
+  },
+  "contact": {
+    "email": "hello@example.com",
+    "phone": "+353 00 000 0000"
+  }
+}

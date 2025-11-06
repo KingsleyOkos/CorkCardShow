@@ -28,10 +28,14 @@ h2{font-size:var(--h2); margin:0 0 .75rem}
   background:color-mix(in oklab, #fff 85%, transparent); border-bottom:1px solid var(--border)}
 .header-inner{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0}
 .brand{display:flex; align-items:center; gap:10px}
-.logo{width:36px; height:auto}
-.brand-name{font-weight:700; color:var(--text)}
+.logo{width:48px; height:auto}
+.brand-name{font-weight:700; color:var(--text); white-space: nowrap; }
 .nav{display:flex; gap:12px; flex-wrap:wrap}
 .nav a{padding:6px 10px; border-radius:999px}
+
+.ig-grid{ display:grid; gap:16px; }
+@media (min-width:640px){ .ig-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (min-width:960px){ .ig-grid{ grid-template-columns: repeat(3, 1fr); } }
 
 .section{padding:var(--space-lg) 0}
 .card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:var(--space); box-shadow:var(--shadow)}

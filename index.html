@@ -6,7 +6,9 @@
   <title>Cork Card Show</title>
   <meta name="description" content="Cork Card Show — events, vendors, and community." />
   <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="preload" href="./assets/img/logo.svg" as="image">
   <script defer src="./js/script.js"></script>
+  <script src="https://www.eventbrite.com/static/widgets/eb_widgets.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#about">Skip to content</a>
@@ -14,7 +16,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top">
-        <img src="./assets/logo.svg" alt="Cork Card Show logo" class="logo" />
+        <img src="./assets/img/logo.svg" alt="Cork Card Show logo" class="logo" />
         <span class="brand-name">Cork Card Show</span>
       </a>
       <nav class="nav" aria-label="Main">
@@ -37,34 +39,27 @@
     </section>
 
     <section id="instagram" class="section">
-      <div class="container">
+    <div class="container">
         <h2>Latest on Instagram</h2>
-        <div class="card embed">
-          <div id="instagram-placeholder" class="embed-placeholder">
-            <p>To keep things fast, we only load Instagram after you click.</p>
-            <button class="btn" data-load="instagram">Load Instagram feed</button>
-          </div>
-          <div id="instagram-embed" class="embed-target" hidden></div>
+        <div class="card">
+        <div id="instagram-embed" class="ig-grid"></div>
         </div>
         <p class="cta-row"><a id="link-ig" class="link" href="#" target="_blank" rel="noopener">View on Instagram</a></p>
-      </div>
+    </div>
     </section>
 
+
+
     <section id="eventbrite" class="section">
-      <div class="container">
-        <h2>Tickets</h2>
-        <div class="card embed">
-          <div id="eventbrite-placeholder" class="embed-placeholder">
-            <p>Buy tickets via Eventbrite. Load the checkout here or open Eventbrite in a new tab.</p>
-            <div class="embed-actions">
-              <button class="btn" data-load="eventbrite">Load Eventbrite checkout</button>
-              <a id="link-eb" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open on Eventbrite</a>
+        <div class="container">
+            <h2>Tickets</h2>
+            <div class="card embed">
+            <div id="eventbrite-embed" class="embed-target"></div>
             </div>
-          </div>
-          <div id="eventbrite-embed" class="embed-target" hidden></div>
+            <p class="cta-row"><a id="link-eb" class="link" href="#" target="_blank" rel="noopener">Open on Eventbrite</a></p>
         </div>
-      </div>
     </section>
+
 
     <section id="vendors" class="section">
       <div class="container">
