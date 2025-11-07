@@ -18,8 +18,8 @@
   --h2: clamp(20px, 5vw, 28px);
   --p: clamp(15px, 2.6vw, 17px);
 
-  --header-h: 84px;                 /* header height — increase for bigger logo */
-  --divider-h: 4px;                 /* section divider thickness */
+  --header-h: 75px;                 /* header height — increase for bigger logo */
+  --divider-h: 2px;                 /* section divider thickness */
   --divider-speed: 6s;             /* divider animation speed */
   --form-h-collapsed: 520px;        /* short Google Form height */
   --form-h-expanded: 900px;         /* full Google Form height */
@@ -47,8 +47,27 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
   position:sticky; top:0; z-index:10;
   backdrop-filter: blur(6px);
   background: color-mix(in oklab, #fff 85%, transparent);
-  border-bottom:1px solid var(--border);
+  border-bottom:none;                /* we'll draw our own animated divider */
+  position: sticky;
 }
+
+/* animated brand divider under the header */
+.site-header::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0;
+  height: var(--divider-h);
+  background: linear-gradient(
+    90deg,
+    var(--brand-green) 0%,
+    var(--brand-yellow) 50%,
+    var(--brand-green) 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: repeat-x;
+  animation: brandSweep var(--divider-speed) linear infinite;
+  pointer-events:none;
+}
+
 .header-inner{
   display:flex; align-items:center; justify-content:space-between;
   min-height: var(--header-h);
@@ -63,10 +82,85 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
 .nav{ display:flex; gap:18px; flex-wrap:wrap; }
 .nav a{ padding:8px 12px; border-radius:999px; }
 
+/* Header nav colour override (optional) */
+.site-header .nav a,
+.site-header .nav a:visited {
+  color: var(--text);
+}
+.site-header .nav a:hover,
+.site-header .nav a:focus-visible {
+  color: var(--brand-green);
+  text-decoration: none;
+}
+
+
 @media (max-width:420px){
   :root{ --header-h: 72px; } /* auto-scales logo with header */
   .nav a{ padding:6px 10px; }
 }
+
+/* --- Hamburger button--- */
+.hamburger{
+  display:none;           /* default: hidden */
+  width:40px; height:40px; border:0; background:transparent; padding:8px;
+  align-items:center; justify-content:center; cursor:pointer;
+}
+.hamburger .bar{
+  display:block; width:24px; height:2px; background:var(--text);
+  margin:4px 0; border-radius:2px; transition:transform .2s ease, opacity .2s ease;
+}
+
+/* transform to “X” when open */
+.hamburger.is-open .bar:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+.hamburger.is-open .bar:nth-child(2){ opacity:0; }
+.hamburger.is-open .bar:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+
+/* show hamburger on small screens, hide desktop nav */
+@media (max-width: 800px){
+  .nav{ display:none; }
+  .hamburger{ display:flex; }
+}
+
+/* --- Fullscreen mobile nav overlay --- */
+.mobile-nav{
+  position:fixed; inset:0; z-index:50;
+  display:flex; flex-direction:column;
+  background: #0b0b0b;                       /* solid backdrop for contrast */
+  color:#fff;
+  opacity:0; visibility:hidden; transform: translateY(-8px);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+}
+.mobile-nav.is-open{
+  opacity:1; visibility:visible; transform: translateY(0);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+/* top row inside overlay */
+.mobile-nav__top{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 12px 16px;
+  min-height: var(--header-h);
+}
+.mobile-logo{ height: calc(var(--header-h) - 16px); width:auto; }
+
+/* close button = same hamburger visual but white */
+.mobile-nav .hamburger.close .bar{ background:#fff; }
+
+/* big centered links */
+.mobile-menu{
+  display:grid; place-items:center; gap:18px;
+  padding: 24px 16px;
+}
+.mobile-link{
+  color:#fff; text-decoration:none;
+  font-weight:700; letter-spacing:.2px;
+  font-size: clamp(20px, 6vw, 28px);
+}
+.mobile-link:hover, .mobile-link:focus-visible{ color: var(--brand-green); text-decoration:none; }
+
+/* prevent page scroll when menu is open */
+body.nav-open{ overflow:hidden; }
+
 
 /*******************************
  * 4) SECTIONS & DIVIDERS
@@ -158,6 +252,8 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
 .btn:hover{ filter:brightness(.98); text-decoration:none; }
 .btn-outline{ background:transparent; color:var(--text); border:2px solid var(--border); }
 .cta-row{ margin-top:12px; }
+.cta-center{ display:flex; justify-content:center; margin-top:12px; }
+
 
 /*******************************
  * 9) CONTACT LIST & FOOTER

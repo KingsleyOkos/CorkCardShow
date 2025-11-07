@@ -74,6 +74,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     cfg = await res.json();
   } catch {}
 
+  // --- Mobile nav ---
+  const toggleBtn  = document.getElementById('nav-toggle');
+  const closeBtn   = document.getElementById('nav-close');
+  const mobileNav  = document.getElementById('mobile-nav');
+
+  function openNav(){
+    document.body.classList.add('nav-open');
+    mobileNav.classList.add('is-open');
+    toggleBtn.classList.add('is-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    mobileNav.setAttribute('aria-hidden','false');
+    }
+
+  function closeNav(){
+    document.body.classList.remove('nav-open');
+    mobileNav.classList.remove('is-open');
+    toggleBtn.classList.remove('is-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+    mobileNav.setAttribute('aria-hidden','true');
+    }
+
+  toggleBtn?.addEventListener('click', () => {
+    const open = mobileNav.classList.contains('is-open');
+    open ? closeNav() : openNav();
+    });
+  closeBtn?.addEventListener('click', closeNav);
+
+  // close on link click
+  mobileNav?.addEventListener('click', (e) => {
+    if (e.target.matches('.mobile-link')) closeNav();
+  });
+
+  // close on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) closeNav();
+  });
+
+
   // About
   if (cfg.about) document.getElementById("about-text").textContent = cfg.about;
 
@@ -100,19 +138,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   const lf = document.getElementById("link-form");
   if (lf) lf.href = cfg.vendorForm?.embedSrc || cfg.vendorForm?.url;
-
-  // --- Google Form expand/collapse ---
-    const formEl = document.getElementById("vendor-form");
-    const formToggle = document.getElementById("form-toggle");
-    if (formEl && formToggle) {
-        let collapsed = true;
-        const setFormHeight = () => {
-            formEl.style.height = collapsed ? "var(--form-h-collapsed)" : "var(--form-h-expanded)";
-            formToggle.textContent = collapsed ? "Show full form" : "Collapse form";
-        };
-        formToggle.addEventListener("click", () => { collapsed = !collapsed; setFormHeight(); });
-        setFormHeight(); // initialize
-    }
 
 
   // Contact

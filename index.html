@@ -18,13 +18,29 @@
         <a class="brand" href="#top" aria-label="Cork Card Show home">
         <img src="./assets/img/logo.svg" alt="Cork Card Show" class="logo" />
         </a>
-        <nav class="nav" aria-label="Main">
-        <a href="#eventbrite">Tickets</a>
-        <a href="#vendors">Vendors</a>
-        <a href="#contact">Contact</a>
-        </nav>
+        <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
     </div>
   </header>
+
+  <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+  <div class="mobile-nav__top">
+    <img src="./assets/img/logo.svg" alt="Cork Card Show" class="mobile-logo">
+    <button id="nav-close" class="hamburger close" aria-label="Close menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" aria-label="Mobile">
+    <a href="#eventbrite" class="mobile-link">Buy Tickets</a>
+    <a href="#vendors"   class="mobile-link">Vendors</a>
+    <a href="#contact"   class="mobile-link">Contact</a>
+  </nav>
+</div>
+
 
 
   <main id="top">
@@ -32,17 +48,16 @@
       <div class="container">
         <h2>About Us</h2>
         <p id="about-text">About text loads from data/content.json.</p>
-        <p class="cta-row"><a id="cta-follow-ig" class="btn" href="#" target="_blank" rel="noopener">Follow on Instagram</a></p>
+        <p class="cta-row"><a id="cta-follow-ig" class="btn" href="#" target="_blank" rel="noopener">Hello World</a></p>
       </div>
     </section>
 
     <section id="instagram" class="section">
     <div class="container">
-        <h2>Latest on Instagram</h2>
+        <h2>Latest From Instagram</h2>
         <div class="card">
         <div id="instagram-embed" class="ig-grid"></div>
         </div>
-        <p class="cta-row"><a id="link-ig" class="link" href="#" target="_blank" rel="noopener">View on Instagram</a></p>
     </div>
     </section>
 
@@ -73,12 +88,10 @@
         <h2>Vendor Application</h2>
         <div class="card">
           <iframe id="vendor-form" title="Vendor application form" loading="lazy"></iframe>
-          <p class="cta-row">
-            <button id="form-toggle" class="btn btn-outline" type="button">Show full form</button>
-            <a id="link-form" class="link" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
+          <p class="cta-center">
+            <a id="link-form" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
             </p>
         </div>
-        <p class="cta-row"><a id="link-form" class="link" href="#" target="_blank" rel="noopener">Open form in a new tab</a></p>
       </div>
     </section>
 
