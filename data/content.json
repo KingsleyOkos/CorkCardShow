@@ -4,8 +4,7 @@
     "profile": "https://instagram.com/corkcardshow",
     "posts": [
         "https://www.instagram.com/p/DIbQkWPqHLl/",
-        "https://www.instagram.com/p/DQqo8WfjOWK/",
-        "https://www.instagram.com/reel/DIO3nL8qq_G/"
+        "https://www.instagram.com/p/DQqo8WfjOWK/"   
     ]
 },
     "eventbrite": {
@@ -17,7 +16,6 @@
     "embedSrc": "https://docs.google.com/forms/d/e/1FAIpQLSenPXp129__HNyk4vHScPMrTBFHJT2LgVBIp0XhxaYpwl6VHg/viewform?embedded=true"
   },
   "contact": {
-    "email": "JohnEmail@MoneyUp.com",
-    "phone": "+353 87 123 4567"
+    "email": "CorkCardShow@gmail.com"
   }
 }
