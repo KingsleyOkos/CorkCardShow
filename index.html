@@ -15,19 +15,17 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#top">
-        <img src="./assets/img/logo.svg" alt="Cork Card Show logo" class="logo" />
-        <span class="brand-name">Cork Card Show</span>
-      </a>
-      <nav class="nav" aria-label="Main">
-        <a href="#about">About</a>
-        <a href="#instagram">Instagram</a>
+        <a class="brand" href="#top" aria-label="Cork Card Show home">
+        <img src="./assets/img/logo.svg" alt="Cork Card Show" class="logo" />
+        </a>
+        <nav class="nav" aria-label="Main">
         <a href="#eventbrite">Tickets</a>
         <a href="#vendors">Vendors</a>
         <a href="#contact">Contact</a>
-      </nav>
+        </nav>
     </div>
   </header>
+
 
   <main id="top">
     <section id="about" class="section">
@@ -51,14 +49,23 @@
 
 
     <section id="eventbrite" class="section">
-        <div class="container">
-            <h2>Tickets</h2>
-            <div class="card embed">
-            <div id="eventbrite-embed" class="embed-target"></div>
-            </div>
-            <p class="cta-row"><a id="link-eb" class="link" href="#" target="_blank" rel="noopener">Open on Eventbrite</a></p>
+      <div class="container">
+        <h2>Tickets</h2>
+        <div class="card embed">
+        <!-- Placeholder shown by default -->
+        <div id="eventbrite-placeholder" class="placeholder">
+            <span class="tag">Tickets</span>
+            <p>Embedded checkout will appear here when enabled. For now you can open Eventbrite in a new tab.</p>
         </div>
+        <!-- Embed target (injected by JS when ready) -->
+        <div id="eventbrite-embed" class="embed-target" aria-live="polite"></div>
+        </div>
+        <p class="cta-row">
+        <a id="link-eb" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open on Eventbrite</a>
+        </p>
+       </div>
     </section>
+
 
 
     <section id="vendors" class="section">
@@ -66,6 +73,10 @@
         <h2>Vendor Application</h2>
         <div class="card">
           <iframe id="vendor-form" title="Vendor application form" loading="lazy"></iframe>
+          <p class="cta-row">
+            <button id="form-toggle" class="btn btn-outline" type="button">Show full form</button>
+            <a id="link-form" class="link" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
+            </p>
         </div>
         <p class="cta-row"><a id="link-form" class="link" href="#" target="_blank" rel="noopener">Open form in a new tab</a></p>
       </div>

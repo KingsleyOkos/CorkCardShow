@@ -8,15 +8,16 @@
         "https://www.instagram.com/reel/DIO3nL8qq_G/"
     ]
 },
-  "eventbrite": {
-    "url": "https://www.eventbrite.com/e/the-next-big-thing-2025-tickets-1035220100187",
-    "eventId": "1035220100187"
-  },
+    "eventbrite": {
+    "url": "https://www.eventbrite.ie/e/cork-card-show-tickets-1955113018669",
+    "eventId": "1955113018669"
+    }
+,
   "vendorForm": {
     "embedSrc": "https://docs.google.com/forms/d/e/1FAIpQLSenPXp129__HNyk4vHScPMrTBFHJT2LgVBIp0XhxaYpwl6VHg/viewform?embedded=true"
   },
   "contact": {
-    "email": "hello@example.com",
-    "phone": "+353 00 000 0000"
+    "email": "JohnEmail@MoneyUp.com",
+    "phone": "+353 87 123 4567"
   }
 }

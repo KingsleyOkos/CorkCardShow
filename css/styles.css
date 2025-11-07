@@ -1,56 +1,176 @@
+/*******************************
+ * 1) DESIGN TOKENS
+ *******************************/
 :root{
   --brand-green:#46b48a;
   --brand-yellow:#fcdc58;
   --text:#0b0b0b;
   --bg:#fff;
   --border:#e6e6e6;
+
   --radius:16px;
   --shadow:0 6px 20px rgba(0,0,0,.06);
+
   --maxw: 980px;
   --space: clamp(16px, 3vw, 28px);
   --space-lg: clamp(24px, 5vw, 40px);
+
   --h2: clamp(20px, 5vw, 28px);
   --p: clamp(15px, 2.6vw, 17px);
+
+  --header-h: 84px;                 /* header height — increase for bigger logo */
+  --divider-h: 4px;                 /* section divider thickness */
+  --divider-speed: 6s;             /* divider animation speed */
+  --form-h-collapsed: 520px;        /* short Google Form height */
+  --form-h-expanded: 900px;         /* full Google Form height */
 }
 
-*{box-sizing:border-box}
+/*******************************
+ * 2) BASE + TYPOGRAPHY
+ *******************************/
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }          /* smooth anchor jumps */
 body{
   margin:0; color:var(--text); background:var(--bg);
   font:400 var(--p)/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
 }
-img{max-width:100%; display:block}
-a{color:var(--brand-green); text-decoration:none}
-a:hover{text-decoration:underline}
-h2{font-size:var(--h2); margin:0 0 .75rem}
-.container{width:min(100% - 24px,var(--maxw)); margin-inline:auto}
+img{ max-width:100%; display:block; }
+a{ color:var(--brand-green); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+h2{ font-size:var(--h2); margin:0 0 .75rem; }
+.container{ width:min(100% - 24px, var(--maxw)); margin-inline:auto; }
 
-.site-header{position:sticky; top:0; z-index:10; backdrop-filter:blur(6px);
-  background:color-mix(in oklab, #fff 85%, transparent); border-bottom:1px solid var(--border)}
-.header-inner{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0}
-.brand{display:flex; align-items:center; gap:10px}
-.logo{width:48px; height:auto}
-.brand-name{font-weight:700; color:var(--text); white-space: nowrap; }
-.nav{display:flex; gap:12px; flex-wrap:wrap}
-.nav a{padding:6px 10px; border-radius:999px}
+/*******************************
+ * 3) HEADER / NAV
+ *******************************/
+.site-header{
+  position:sticky; top:0; z-index:10;
+  backdrop-filter: blur(6px);
+  background: color-mix(in oklab, #fff 85%, transparent);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  min-height: var(--header-h);
+  padding-block: 8px;
+  gap:16px;
+}
 
+.brand{ display:flex; align-items:center; gap:10px; }
+.logo{ height: calc(var(--header-h) - 16px); width:auto; } /* bigger logo without growing header */
+.brand-name{ display:none; }
+
+.nav{ display:flex; gap:18px; flex-wrap:wrap; }
+.nav a{ padding:8px 12px; border-radius:999px; }
+
+@media (max-width:420px){
+  :root{ --header-h: 72px; } /* auto-scales logo with header */
+  .nav a{ padding:6px 10px; }
+}
+
+/*******************************
+ * 4) SECTIONS & DIVIDERS
+ *******************************/
+.section{
+  padding:var(--space-lg) 0;
+  scroll-margin-top: calc(var(--header-h) + 8px); /* anchor snap offset */
+}
+
+.section{
+  padding:var(--space-lg) 0;
+  scroll-margin-top: calc(var(--header-h) + 8px); /* anchor snap offset */
+}
+
+/* striking, seamless animated divider between sections */
+.section + .section{ border-top:none; position:relative; }
+.section + .section::before{
+  content:""; display:block;
+  height: var(--divider-h);
+  margin-bottom: var(--space);
+  border-radius: 0; /* square ends */
+
+  /* gradient loops only through brand colors */
+  background: linear-gradient(
+    90deg,
+    var(--brand-green) 0%,
+    var(--brand-yellow) 50%,
+    var(--brand-green) 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: repeat-x;
+  animation: brandSweep var(--divider-speed) linear infinite;
+}
+
+@keyframes brandSweep{
+  0%   { background-position:   0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .section + .section::before{ animation:none; }
+}
+
+/*******************************
+ * 5) CARDS
+ *******************************/
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:var(--space);
+  box-shadow:var(--shadow);
+}
+
+/*******************************
+ * 6) EMBEDS (IG / EVENTBRITE / FORMS)
+ *******************************/
+.card.embed{ overflow:hidden; }           /* keep heavy iframes contained */
+.embed .embed-placeholder{ display:grid; gap:12px; }
+.embed-target:empty{ display:none; }
+
+.embed-target iframe{
+  width:100%; height:520px; border:0; border-radius:12px;
+}
+#eventbrite .embed-target iframe{ height:740px; } /* EB tends to need more height */
+
+/* Google Form */
+#vendor-form{
+  width:100%;
+  height: var(--form-h-collapsed);  /* default: short */
+  border:0;
+}
+
+/*******************************
+ * 7) INSTAGRAM GRID (official post embeds)
+ *******************************/
 .ig-grid{ display:grid; gap:16px; }
 @media (min-width:640px){ .ig-grid{ grid-template-columns: repeat(2, 1fr); } }
 @media (min-width:960px){ .ig-grid{ grid-template-columns: repeat(3, 1fr); } }
 
-.section{padding:var(--space-lg) 0}
-.card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:var(--space); box-shadow:var(--shadow)}
-.embed .embed-placeholder{display:grid; gap:12px}
-.embed-target iframe{width:100%; height:520px; border:0; border-radius:12px}
-#vendor-form{width:100%; height:900px; border:0}
+/*******************************
+ * 8) BUTTONS & CTAs
+ *******************************/
+.btn{
+  display:inline-block; border:0; cursor:pointer;
+  padding:10px 14px; border-radius:999px; font-weight:600;
+  background:var(--brand-green); color:#08301f; box-shadow:var(--shadow);
+}
+.btn:hover{ filter:brightness(.98); text-decoration:none; }
+.btn-outline{ background:transparent; color:var(--text); border:2px solid var(--border); }
+.cta-row{ margin-top:12px; }
 
-.btn{display:inline-block; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:600;
-  background:var(--brand-green); color:#08301f; box-shadow:var(--shadow)}
-.btn:hover{text-decoration:none; filter:brightness(.98)}
-.btn-outline{background:transparent; color:var(--text); border:2px solid var(--border)}
-.cta-row{margin-top:12px}
+/*******************************
+ * 9) CONTACT LIST & FOOTER
+ *******************************/
+.contact-list{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+.site-footer{ padding:28px 0; border-top:1px solid var(--border); }
 
-.contact-list{list-style:none; padding:0; margin:0; display:grid; gap:6px}
-.site-footer{padding:28px 0; border-top:1px solid var(--border)}
-
-.skip-link{position:absolute; left:-9999px}
-.skip-link:focus{left:8px; top:8px; background:var(--brand-yellow); color:#2a2100; padding:8px 12px; border-radius:6px}
+/*******************************
+ * 10) UTILITIES
+ *******************************/
+.hidden{ display:none !important; }
+.skip-link{ position:absolute; left:-9999px; }
+.skip-link:focus{
+  left:8px; top:8px; background:var(--brand-yellow); color:#2a2100;
+  padding:8px 12px; border-radius:6px;
+}

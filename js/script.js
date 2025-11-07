@@ -26,50 +26,41 @@ function loadIframe(targetId, src) {
 function renderInstagramPosts(posts){
   const wrap = document.getElementById("instagram-embed");
   if (!wrap || !Array.isArray(posts)) return;
-
   posts.forEach(url => {
     const bq = document.createElement("blockquote");
     bq.className = "instagram-media";
     bq.setAttribute("data-instgrm-permalink", url);
     bq.setAttribute("data-instgrm-version", "14");
-    bq.style.background = "#FFF";
-    bq.style.border = "0";
-    bq.style.borderRadius = "12px";
-    bq.style.boxShadow = "0 0 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.08)";
-    bq.style.margin = "0";
-    bq.style.minWidth = "260px";
-    bq.style.width = "100%";
+    bq.style.border = "0"; bq.style.borderRadius = "12px"; bq.style.width = "100%";
     wrap.appendChild(bq);
   });
-
-  //loads the embed script 
-    if (!document.querySelector('script[src="https://www.instagram.com/embed.js"]')) {
+  // load once or reprocess if already loaded
+  if (!document.querySelector('script[src="https://www.instagram.com/embed.js"]')) {
     const s = document.createElement("script");
-    s.src = "https://www.instagram.com/embed.js";
-    s.async = true;
+    s.src = "https://www.instagram.com/embed.js"; s.async = true;
     document.head.appendChild(s);
   } else if (window.instgrm?.Embeds?.process) {
-    // if script already present, ask it to (re)process
     window.instgrm.Embeds.process();
   }
 }
 
 function whenEventbriteReady(cb, tries = 0){
-  if (window.EBWidgets && typeof window.EBWidgets.createWidget === "function") return cb();
-  if (tries > 40) return; // ~4s max
+  if (window.EBWidgets?.createWidget) return cb();
+  if (tries > 40) return;              // ~4s cap
   setTimeout(() => whenEventbriteReady(cb, tries + 1), 100);
 }
 
 function renderEventbrite(eventId){
-  if (!eventId) return;
   whenEventbriteReady(() => {
-    window.EBWidgets.createWidget({
+    EBWidgets.createWidget({
       widgetType: "checkout",
-      eventId: eventId,
+      eventId,
       iframeContainerId: "eventbrite-embed",
-      iframeContainerHeight: 740,
-      onOrderComplete: function(){ /* optional */ }
+      iframeContainerHeight: 740
     });
+    // Only hide placeholder once we try to render
+    const ph = document.getElementById("eventbrite-placeholder");
+    if (ph) ph.classList.add("hidden");
   });
 }
 
@@ -88,23 +79,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Instagram (auto)
   if (cfg.instagram?.profile) {
-    const link = document.getElementById("link-ig");
-    if (link) link.href = cfg.instagram.profile;
-    const contactIg = document.getElementById("contact-ig");
-    if (contactIg) contactIg.href = cfg.instagram.profile;
+   const ig = document.getElementById("link-ig");
+   if (ig) ig.href = cfg.instagram.profile;
   }
-  if (cfg.instagram?.posts?.length) {
-    renderInstagramPosts(cfg.instagram.posts);
-  }
+  if (cfg.instagram?.posts?.length) renderInstagramPosts(cfg.instagram.posts);
 
   // Eventbrite (auto)
   if (cfg.eventbrite?.url) {
-    const el = document.getElementById("link-eb");
-    if (el) el.href = cfg.eventbrite.url;
-  }
-  if (cfg.eventbrite?.eventId) {
-    renderEventbrite(cfg.eventbrite.eventId);
-  }
+  const a = document.getElementById("link-eb");
+  if (a) a.href = cfg.eventbrite.url;
+ }
+ if (cfg.eventbrite?.eventId) {
+  renderEventbrite(cfg.eventbrite.eventId);
+ }
 
   // Vendor form
   if (cfg.vendorForm?.embedSrc) {
@@ -113,6 +100,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   const lf = document.getElementById("link-form");
   if (lf) lf.href = cfg.vendorForm?.embedSrc || cfg.vendorForm?.url;
+
+  // --- Google Form expand/collapse ---
+    const formEl = document.getElementById("vendor-form");
+    const formToggle = document.getElementById("form-toggle");
+    if (formEl && formToggle) {
+        let collapsed = true;
+        const setFormHeight = () => {
+            formEl.style.height = collapsed ? "var(--form-h-collapsed)" : "var(--form-h-expanded)";
+            formToggle.textContent = collapsed ? "Show full form" : "Collapse form";
+        };
+        formToggle.addEventListener("click", () => { collapsed = !collapsed; setFormHeight(); });
+        setFormHeight(); // initialize
+    }
+
 
   // Contact
   if (cfg.contact?.email) {
