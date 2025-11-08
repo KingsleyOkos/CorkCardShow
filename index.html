@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="./css/styles.css" />
   <link rel="preload" href="./assets/img/logo.svg" as="image">
   <script defer src="./js/script.js"></script>
-  <script src="https://www.eventbrite.com/static/widgets/eb_widgets.js"></script>
+  <script src="https://www.eventbrite.ie/static/widgets/eb_widgets.js"></script>
+  <script src="https://cdn.lightwidget.com/widgets/lightwidget.js" async></script>
 </head>
 <body>
   <a class="skip-link" href="#about">Skip to content</a>
@@ -56,7 +57,7 @@
     <div class="container">
         <h2>Latest From Instagram</h2>
         <div class="card">
-        <div id="instagram-embed" class="ig-grid"></div>
+        <div id="instagram-embed" class="embed-target"></div>
         </div>
     </div>
     </section>
@@ -64,23 +65,42 @@
 
 
     <section id="eventbrite" class="section">
-      <div class="container">
+    <div class="container">
         <h2>Tickets</h2>
-        <div class="card embed">
-        <!-- Placeholder shown by default -->
-        <div id="eventbrite-placeholder" class="placeholder">
-            <span class="tag">Tickets</span>
-            <p>Embedded checkout will appear here when enabled. For now you can open Eventbrite in a new tab.</p>
-        </div>
-        <!-- Embed target (injected by JS when ready) -->
-        <div id="eventbrite-embed" class="embed-target" aria-live="polite"></div>
-        </div>
-        <p class="cta-row">
-        <a id="link-eb" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open on Eventbrite</a>
-        </p>
-       </div>
-    </section>
 
+        <div class="card embed">
+        <!-- Container for Eventbrite widget -->
+        <div id="eventbrite-widget-container-1955113018669"></div>
+        </div>
+
+        <p class="cta-row">
+        <a class="btn btn-outline"
+            href="https://www.eventbrite.ie/e/cork-card-show-tickets-1955113018669"
+            target="_blank"
+            rel="noopener">
+            Open on Eventbrite
+        </a>
+        </p>
+    </div>
+
+    <!-- Direct embed script -->
+    <script type="text/javascript">
+        var exampleCallback = function() {
+        console.log('Order complete!');
+        };
+
+        window.EBWidgets.createWidget({
+        // Required
+        widgetType: 'checkout',
+        eventId: '1955113018669',
+        iframeContainerId: 'eventbrite-widget-container-1955113018669',
+
+        // Optional
+        iframeContainerHeight: 425,
+        onOrderComplete: exampleCallback
+        });
+    </script>
+    </section>
 
 
     <section id="vendors" class="section">

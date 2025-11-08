@@ -2,11 +2,20 @@
  * 1) DESIGN TOKENS
  *******************************/
 :root{
+  /* brand */
   --brand-green:#46b48a;
   --brand-yellow:#fcdc58;
   --text:#0b0b0b;
-  --bg:#fff;
-  --border:#e6e6e6;
+
+  /* DARK canvas */
+  --bg:#0e1311;          /* charcoal base */
+  --bg-deep:#0a0f0e;     /* corners/vignette */
+  --evergreen:#0f2f26;   /* felt hint */
+
+  /* helpers */
+  --mint-8: rgba(70,180,138,.12);
+  --mint-16: rgba(70,180,138,.16);
+  --gold-12: rgba(252,220,88,.12);
 
   --radius:16px;
   --shadow:0 6px 20px rgba(0,0,0,.06);
@@ -44,12 +53,14 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
  * 3) HEADER / NAV
  *******************************/
 .site-header{
-  position:sticky; top:0; z-index:10;
-  backdrop-filter: blur(6px);
-  background: color-mix(in oklab, #fff 85%, transparent);
-  border-bottom:none;                /* we'll draw our own animated divider */
-  position: sticky;
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(8px) saturate(120%);
+  background:
+    color-mix(in oklab, var(--evergreen) 40%, transparent); /* dark mint glass */
+  border-bottom: none; /* let your divider handle separation */
 }
+
+
 
 /* animated brand divider under the header */
 .site-header::after{
@@ -222,10 +233,34 @@ body.nav-open{ overflow:hidden; }
 .embed .embed-placeholder{ display:grid; gap:12px; }
 .embed-target:empty{ display:none; }
 
-.embed-target iframe{
-  width:100%; height:520px; border:0; border-radius:12px;
+/* Default for generic iframes (NOT LightWidget) */
+.embed-target iframe:not(.lightwidget-widget){
+  width:100%;
+  height:520px;
+  border:0;
+  border-radius:12px;
 }
-#eventbrite .embed-target iframe{ height:740px; } /* EB tends to need more height */
+
+/* LightWidget iframe: let its script manage the height */
+.lightwidget-widget{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+/* Eventbrite checkout iframe fix */
+#eventbrite-widget-container-1955113018669 {
+  min-height: 425px;      /* same as iframeContainerHeight in JS */
+}
+
+#eventbrite-widget-container-1955113018669 iframe {
+  width: 100%;
+  min-height: 425px;
+  border: 0;
+  border-radius: 12px;    /* matches your other embeds */
+}
+
 
 /* Google Form */
 #vendor-form{
@@ -270,3 +305,44 @@ body.nav-open{ overflow:hidden; }
   left:8px; top:8px; background:var(--brand-yellow); color:#2a2100;
   padding:8px 12px; border-radius:6px;
 }
+
+/*******************************
+ * 11) DARK TABLE BACKGROUND
+ *******************************/
+html, body { background: var(--bg); }
+body{ position: relative; color: var(--text); }
+
+/* wipe older patterns/glows */
+body::before, body::after, html::before { content:none !important; }
+
+/* deep vignette + evergreen centre */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
+  background:
+    radial-gradient(1200px 800px at 50% 0%,
+      color-mix(in oklab, var(--evergreen) 28%, transparent), transparent 62%),
+    radial-gradient(1600px 1000px at 50% 120%,
+      color-mix(in oklab, #000 35%, transparent), transparent 72%),
+    linear-gradient(color-mix(in oklab, var(--evergreen) 35%, #0b0f0e),
+                    color-mix(in oklab, var(--evergreen) 10%, #0a0f0e));
+}
+
+
+/* mint rimlight (very subtle, so dividers don’t compete) */
+body::after{
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(1000px 420px at 10% 0%, var(--mint-16), transparent 65%),
+    radial-gradient(1000px 420px at 90% 0%, var(--mint-16), transparent 65%);
+  mix-blend-mode: screen; opacity:.6;
+}
+
+/* keep sections readable: white/cream cards on dark canvas still look like “cards on table” */
+.card{ background:#fffefb; }
+
+/* OPTIONAL: if section borders (dividers) feel too loud on dark, soften them a touch */
+.section{
+  border-top-color: color-mix(in oklab, var(--brand-green) 70%, #000 30%);
+}
+
+
