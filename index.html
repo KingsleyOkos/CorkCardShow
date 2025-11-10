@@ -47,40 +47,32 @@
   <main id="top">
     <section id="about" class="section">
       <div class="container">
-        <h2>About Us</h2>
-        <p id="about-text">About text loads from data/content.json.</p>
-        <p class="cta-row"><a id="cta-follow-ig" class="btn" href="#" target="_blank" rel="noopener">Hello World</a></p>
+        <h2 class="title-center">About Us</h2>
+        <p id="about-text" class="text-center">About text loads from data/content.json.</p>
+        <p class="cta-row"><a id="cta-follow-ig" class="btn center-block" href="#" target="_blank" rel="noopener">Hello World</a></p>
       </div>
     </section>
 
     <section id="instagram" class="section">
     <div class="container">
-        <h2>Latest From Instagram</h2>
+        <h2 class="title-center">Latest From Instagram</h2>
         <div class="card">
-        <div id="instagram-embed" class="embed-target"></div>
-        </div>
+      <div id="instagram-embed" class="embed-target"></div>
     </div>
+  </div>
     </section>
 
 
 
     <section id="eventbrite" class="section">
     <div class="container">
-        <h2>Tickets</h2>
+        <h2 class="title-center">Tickets</h2>
+
 
         <div class="card embed">
         <!-- Container for Eventbrite widget -->
-        <div id="eventbrite-widget-container-1955113018669"></div>
+        <div id="eventbrite-widget-container-1955113018669" class="animated-border"></div>
         </div>
-
-        <p class="cta-row">
-        <a class="btn btn-outline"
-            href="https://www.eventbrite.ie/e/cork-card-show-tickets-1955113018669"
-            target="_blank"
-            rel="noopener">
-            Open on Eventbrite
-        </a>
-        </p>
     </div>
 
     <!-- Direct embed script -->
@@ -105,19 +97,21 @@
 
     <section id="vendors" class="section">
       <div class="container">
-        <h2>Vendor Application</h2>
-        <div class="card">
-          <iframe id="vendor-form" title="Vendor application form" loading="lazy"></iframe>
-          <p class="cta-center">
-            <a id="link-form" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
+        <h2 class="title-center">Vendor Application</h2>
+            <div class="card">
+            <iframe id="vendor-form"
+                    class="animated-border"
+                    title="Vendor application form"
+                    loading="lazy"></iframe>
+            <p class="cta-center">
+                <a id="link-form" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
             </p>
-        </div>
-      </div>
+            </div>
     </section>
 
     <section id="contact" class="section">
       <div class="container">
-        <h2>Contact</h2>
+        <h2 class="title-center">Contact</h2>
         <ul class="contact-list">
           <li>Email: <a id="contact-email" href="#">—</a></li>
           <li>Instagram: <a id="contact-ig" href="#" target="_blank" rel="noopener">@corkcardshow</a></li>

@@ -7,15 +7,11 @@
   --brand-yellow:#fcdc58;
   --text:#0b0b0b;
 
-  /* DARK canvas */
-  --bg:#0e1311;          /* charcoal base */
-  --bg-deep:#0a0f0e;     /* corners/vignette */
-  --evergreen:#0f2f26;   /* felt hint */
+  /* light canvas + surfaces */
+  --bg:#ffffff;          /* off-white paper */
 
-  /* helpers */
-  --mint-8: rgba(70,180,138,.12);
-  --mint-16: rgba(70,180,138,.16);
-  --gold-12: rgba(252,220,88,.12);
+  --evergreen:#1a4434;                 /* used by the header glass */
+  --border:#e9e5d9;                    /* warm grey for cards/outlines */
 
   --radius:16px;
   --shadow:0 6px 20px rgba(0,0,0,.06);
@@ -29,9 +25,9 @@
 
   --header-h: 75px;                 /* header height — increase for bigger logo */
   --divider-h: 2px;                 /* section divider thickness */
+  --divider-w: 80%;   /* set the divider length; tweak to taste */
   --divider-speed: 6s;             /* divider animation speed */
   --form-h-collapsed: 520px;        /* short Google Form height */
-  --form-h-expanded: 900px;         /* full Google Form height */
 }
 
 /*******************************
@@ -48,6 +44,9 @@ a{ color:var(--brand-green); text-decoration:none; }
 a:hover{ text-decoration:underline; }
 h2{ font-size:var(--h2); margin:0 0 .75rem; }
 .container{ width:min(100% - 24px, var(--maxw)); margin-inline:auto; }
+.title-center { text-align: center; }
+.text-center { text-align: center; }
+.center-block { display: block; width: fit-content; margin-inline: auto; }
 
 /*******************************
  * 3) HEADER / NAV
@@ -60,24 +59,17 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
   border-bottom: none; /* let your divider handle separation */
 }
 
-
-
-/* animated brand divider under the header */
 .site-header::after{
   content:"";
   position:absolute; left:0; right:0; bottom:0;
   height: var(--divider-h);
-  background: linear-gradient(
-    90deg,
-    var(--brand-green) 0%,
-    var(--brand-yellow) 50%,
-    var(--brand-green) 100%
-  );
-  background-size: 200% 100%;
-  background-repeat: repeat-x;
-  animation: brandSweep var(--divider-speed) linear infinite;
+  background: var(--evergreen);   /* solid line matching header glass */
+  background-size: initial;
+  background-repeat: no-repeat;
+  animation: none;
   pointer-events:none;
 }
+
 
 .header-inner{
   display:flex; align-items:center; justify-content:space-between;
@@ -176,10 +168,6 @@ body.nav-open{ overflow:hidden; }
 /*******************************
  * 4) SECTIONS & DIVIDERS
  *******************************/
-.section{
-  padding:var(--space-lg) 0;
-  scroll-margin-top: calc(var(--header-h) + 8px); /* anchor snap offset */
-}
 
 .section{
   padding:var(--space-lg) 0;
@@ -192,7 +180,9 @@ body.nav-open{ overflow:hidden; }
   content:""; display:block;
   height: var(--divider-h);
   margin-bottom: var(--space);
-  border-radius: 0; /* square ends */
+  width: var(--divider-w);
+  margin: 0 auto var(--space);   /* center it */
+  border-radius: 999px; /* square ends */
 
   /* gradient loops only through brand colors */
   background: linear-gradient(
@@ -215,6 +205,7 @@ body.nav-open{ overflow:hidden; }
   .section + .section::before{ animation:none; }
 }
 
+
 /*******************************
  * 5) CARDS
  *******************************/
@@ -230,7 +221,6 @@ body.nav-open{ overflow:hidden; }
  * 6) EMBEDS (IG / EVENTBRITE / FORMS)
  *******************************/
 .card.embed{ overflow:hidden; }           /* keep heavy iframes contained */
-.embed .embed-placeholder{ display:grid; gap:12px; }
 .embed-target:empty{ display:none; }
 
 /* Default for generic iframes (NOT LightWidget) */
@@ -269,12 +259,9 @@ body.nav-open{ overflow:hidden; }
   border:0;
 }
 
-/*******************************
- * 7) INSTAGRAM GRID (official post embeds)
- *******************************/
-.ig-grid{ display:grid; gap:16px; }
-@media (min-width:640px){ .ig-grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (min-width:960px){ .ig-grid{ grid-template-columns: repeat(3, 1fr); } }
+
+
+
 
 /*******************************
  * 8) BUTTONS & CTAs
@@ -294,7 +281,6 @@ body.nav-open{ overflow:hidden; }
  * 9) CONTACT LIST & FOOTER
  *******************************/
 .contact-list{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
-.site-footer{ padding:28px 0; border-top:1px solid var(--border); }
 
 /*******************************
  * 10) UTILITIES
@@ -306,43 +292,6 @@ body.nav-open{ overflow:hidden; }
   padding:8px 12px; border-radius:6px;
 }
 
-/*******************************
- * 11) DARK TABLE BACKGROUND
- *******************************/
-html, body { background: var(--bg); }
-body{ position: relative; color: var(--text); }
 
-/* wipe older patterns/glows */
-body::before, body::after, html::before { content:none !important; }
-
-/* deep vignette + evergreen centre */
-body::before{
-  content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
-  background:
-    radial-gradient(1200px 800px at 50% 0%,
-      color-mix(in oklab, var(--evergreen) 28%, transparent), transparent 62%),
-    radial-gradient(1600px 1000px at 50% 120%,
-      color-mix(in oklab, #000 35%, transparent), transparent 72%),
-    linear-gradient(color-mix(in oklab, var(--evergreen) 35%, #0b0f0e),
-                    color-mix(in oklab, var(--evergreen) 10%, #0a0f0e));
-}
-
-
-/* mint rimlight (very subtle, so dividers don’t compete) */
-body::after{
-  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
-  background:
-    radial-gradient(1000px 420px at 10% 0%, var(--mint-16), transparent 65%),
-    radial-gradient(1000px 420px at 90% 0%, var(--mint-16), transparent 65%);
-  mix-blend-mode: screen; opacity:.6;
-}
-
-/* keep sections readable: white/cream cards on dark canvas still look like “cards on table” */
-.card{ background:#fffefb; }
-
-/* OPTIONAL: if section borders (dividers) feel too loud on dark, soften them a touch */
-.section{
-  border-top-color: color-mix(in oklab, var(--brand-green) 70%, #000 30%);
-}
 
 
