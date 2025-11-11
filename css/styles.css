@@ -26,8 +26,13 @@
   --header-h: 75px;                 /* header height — increase for bigger logo */
   --divider-h: 2px;                 /* section divider thickness */
   --divider-w: 80%;   /* set the divider length; tweak to taste */
-  --divider-speed: 6s;             /* divider animation speed */
+  --divider-speed: 7s;             /* divider animation speed */
   --form-h-collapsed: 520px;        /* short Google Form height */
+}
+    @property --card-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
 }
 
 /*******************************
@@ -174,35 +179,15 @@ body.nav-open{ overflow:hidden; }
   scroll-margin-top: calc(var(--header-h) + 8px); /* anchor snap offset */
 }
 
-/* striking, seamless animated divider between sections */
+/*divider between sections */
 .section + .section{ border-top:none; position:relative; }
 .section + .section::before{
   content:""; display:block;
   height: var(--divider-h);
-  margin-bottom: var(--space);
   width: var(--divider-w);
   margin: 0 auto var(--space);   /* center it */
-  border-radius: 999px; /* square ends */
-
-  /* gradient loops only through brand colors */
-  background: linear-gradient(
-    90deg,
-    var(--brand-green) 0%,
-    var(--brand-yellow) 50%,
-    var(--brand-green) 100%
-  );
-  background-size: 200% 100%;
-  background-repeat: repeat-x;
-  animation: brandSweep var(--divider-speed) linear infinite;
-}
-
-@keyframes brandSweep{
-  0%   { background-position:   0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .section + .section::before{ animation:none; }
+  border-radius: 999px;
+  background: var(--evergreen);
 }
 
 
@@ -219,7 +204,7 @@ body.nav-open{ overflow:hidden; }
 }
 
 .card--animated {
-  --card-border-width: 3px;
+  --card-border-width: 2px;
   --card-border-angle: 0deg;
   border-color: transparent;
   background:
