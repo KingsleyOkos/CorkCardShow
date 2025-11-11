@@ -209,13 +209,38 @@ body.nav-open{ overflow:hidden; }
 /*******************************
  * 5) CARDS
  *******************************/
-.card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:var(--space);
-  box-shadow:var(--shadow);
+.card {
+  --card-border-width: 2px;
+  background: #fff;
+  border: var(--card-border-width) solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  box-shadow: var(--shadow);
 }
+
+.card--animated {
+  --card-border-width: 3px;
+  --card-border-angle: 0deg;
+  border-color: transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    conic-gradient(from var(--card-border-angle),
+      var(--brand-green),
+      var(--brand-yellow) 50%,
+      var(--brand-green)) border-box;
+  animation: cardBorderSpin var(--divider-speed) linear infinite;
+}
+
+@keyframes cardBorderSpin {
+  to { --card-border-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--animated {
+    animation: none;
+  }
+}
+
 
 /*******************************
  * 6) EMBEDS (IG / EVENTBRITE / FORMS)
@@ -260,9 +285,6 @@ body.nav-open{ overflow:hidden; }
 }
 
 
-
-
-
 /*******************************
  * 8) BUTTONS & CTAs
  *******************************/
@@ -273,7 +295,7 @@ body.nav-open{ overflow:hidden; }
 }
 .btn:hover{ filter:brightness(.98); text-decoration:none; }
 .btn-outline{ background:transparent; color:var(--text); border:2px solid var(--border); }
-.cta-row{ margin-top:12px; }
+.cta-row {display: flex; justify-content: center; margin-top: 12px; }
 .cta-center{ display:flex; justify-content:center; margin-top:12px; }
 
 
