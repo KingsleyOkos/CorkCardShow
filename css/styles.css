@@ -82,13 +82,13 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
 
 .header-inner{
   display:flex; align-items:center; justify-content:space-between;
-  min-height: var(--header-h);
-  padding-block: 8px;
+  height: var(--header-h);
+  padding-block: 0px;
   gap:16px;
 }
 
 .brand{ display:flex; align-items:center; gap:10px; }
-.logo{ height: calc(var(--header-h) - 10px); width:auto; border-radius: 50%; } /* bigger logo without growing header */
+.logo{ height: calc(var(--header-h) - 10px); width:auto; border-radius: 50%; max-height: 80px;} /* bigger logo without growing header */
 .brand-name{ display:none; }
 
 
@@ -134,10 +134,10 @@ a#hamburger-toggle i:active {
   width: min(420px, 82vw);
   height: calc(100dvh - var(--header-h));
   padding: clamp(20px, 5vw, 32px);
-  color: #fff;
+  color: var(--text);
 
   /* ✨ frosted evergreen panel */
-  background: color-mix(in oklab, var(--evergreen) 70%, transparent);
+  background: color-mix(in oklab, var(--evergreen) 50%, transparent);
   backdrop-filter: blur(10px) saturate(120%);
   -webkit-backdrop-filter: blur(10px) saturate(120%);
   border-left: 1px solid rgba(255,255,255,.08);
@@ -158,7 +158,7 @@ a#hamburger-toggle i:active {
 /* list styling inside the drawer — same feel as your personal site */
 #sliding-menu ul { list-style: none; margin: 0; padding: 0; }
 #sliding-menu ul li::marker { content: none; }
-#sliding-menu strong { color: #fff; }
+#sliding-menu strong { color: var(--text); }
 #sliding-menu > ul > li {
   margin: 20px 0;
   font-size: 20px;
@@ -167,13 +167,13 @@ a#hamburger-toggle i:active {
 #sliding-menu > ul > li > ul { margin-top: 10px; padding: 0; }
 #sliding-menu > ul > li > ul > li {
   font-size: 18px; margin: 8px 0; font-weight: normal;
-  position: relative; padding-left: 1em; color: #fff;
+  position: relative; padding-left: 1em; color: var(--text);
 }
 #sliding-menu > ul > li > ul > li::before {
   content: "—"; display: inline-block; margin-right: 0.25em;
 }
-#sliding-menu a { color: #fff; text-decoration: none; }
-#sliding-menu a:hover { color: #ccc; }
+#sliding-menu a { color: rgb(252, 248, 237); text-decoration: none; }
+#sliding-menu a:hover { color: var(--brand-yellow); }
 
 /* overlay that fades in/out */
 #menu-overlay{

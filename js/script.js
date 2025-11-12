@@ -46,13 +46,11 @@ function loadLightWidget({ embedSrc, scriptSrc }) {
     document.head.appendChild(s);
   }
 }
-const headerEl = document.querySelector('.site-header');
-const syncHeaderVar = () => {
-  const h = headerEl?.offsetHeight || 70;
-  document.documentElement.style.setProperty('--header-h', `${h}px`);
-};
-syncHeaderVar();
-window.addEventListener('resize', syncHeaderVar);
+
+// Always load at the top on same-page nav/reload
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -125,6 +123,17 @@ document.querySelectorAll('#sliding-menu a')
   .forEach(a => a.addEventListener('click', () => { if (menuOpen) closeMenu(); }));
 
 
+    //resetting page
+    function hardHomeReset(e){
+    e?.preventDefault?.();
+    if (typeof closeMenu === 'function') closeMenu();
+    // land at absolute top immediately, then reload to reset embeds/forms
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    location.replace(location.pathname);
+    }
+
+document.querySelector('.brand')?.addEventListener('click', hardHomeReset);
+document.getElementById('menu-home')?.addEventListener('click', hardHomeReset);
 
 
   // About
