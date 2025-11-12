@@ -1,0 +1,381 @@
+/*******************************
+ * 1) DESIGN TOKENS
+ *******************************/
+:root{
+  /* brand */
+  --brand-green:#46b48a;
+  --brand-yellow:#fcdc58;
+  --text:#0b0b0b;
+
+  /* light canvas + surfaces */
+  --bg:#ffffff;          /* off-white paper */
+
+  --evergreen:#1a4434;                 /* used by the header glass */
+  --border:#e9e5d9;                    /* warm grey for cards/outlines */
+
+  --radius:16px;
+  --shadow:0 6px 20px rgba(0,0,0,.06);
+
+  --maxw: 780px;
+  --space: clamp(16px, 3vw, 28px);
+  --space-lg: clamp(24px, 5vw, 40px);
+
+  --h2: clamp(20px, 5vw, 28px);
+  --p: clamp(15px, 2.6vw, 17px);
+
+  --header-h: 70px;                 /* header height — increase for bigger logo */
+  --z-header: 1000;
+  --z-drawer: 950;
+  --z-overlay: 900;
+
+  --divider-h: 2px;                 /* section divider thickness */
+  --divider-w: 80%;   /* set the divider length; tweak to taste */
+  --animation-speed: 5s;             /* divider animation speed */
+  --form-h-collapsed: 520px;        /* short Google Form height */
+}
+    @property --card-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/*******************************
+ * 2) BASE + TYPOGRAPHY
+ *******************************/
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }          /* smooth anchor jumps */
+body{
+  margin:0; color:var(--text); background:var(--bg);
+  font:400 var(--p)/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+}
+img{ max-width:100%; display:block; }
+a{ color:var(--brand-green); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+h2{ font-size:var(--h2); margin:0 0 .75rem; }
+.container{ width:min(100% - 24px, var(--maxw)); margin-inline:auto; }
+.title-center { text-align: center; }
+.text-center { text-align: center; }
+.center-block { display: block; width: fit-content; margin-inline: auto; }
+
+/*******************************
+ * 3) HEADER / NAV
+ *******************************/
+.site-header{
+  position: sticky; top: 0; z-index: var(--z-header);
+  backdrop-filter: blur(8px) saturate(120%);
+  background:
+    color-mix(in oklab, var(--evergreen) 40%, transparent); /* dark mint glass */
+  border-bottom: none; /* let your divider handle separation */
+}
+
+.site-header::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0;
+  height: var(--divider-h);
+  background: var(--evergreen);   /* solid line matching header glass */
+  background-size: initial;
+  background-repeat: no-repeat;
+  animation: none;
+  pointer-events:none;
+}
+
+
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  height: var(--header-h);
+  padding-block: 0px;
+  gap:16px;
+}
+
+.brand{ display:flex; align-items:center; gap:10px; }
+.logo{ height: calc(var(--header-h) - 10px); width:auto; border-radius: 50%; max-height: 80px;} /* bigger logo without growing header */
+.brand-name{ display:none; }
+
+
+/* === Personal-site hamburger in Card Show header === */
+.site-header ul.menu { margin: 0; padding: 0; display:flex; align-items:center; }
+.site-header ul.menu li { margin: 0; list-style: none; }
+
+#hamburger-toggle {
+  margin-right: -10px;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  padding: 10px;            /* makes it easier to tap */
+}
+#hamburger-toggle i {
+  font-size: 17px;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: var(--evergreen);
+}
+/* remove focus ring artifacts on the icon link (as per personal site) */
+a#hamburger-toggle:focus,
+a#hamburger-toggle:focus-visible,
+a#hamburger-toggle:active,
+a#hamburger-toggle i:focus,
+a#hamburger-toggle i:focus-visible,
+a#hamburger-toggle i:active {
+  outline: 0;
+  box-shadow: none;
+  -webkit-focus-ring-color: transparent;
+  outline-offset: 0;
+}
+#hamburger-toggle::-moz-focus-inner { border: 0; }
+
+/* The drawer should start **below** the sticky header */
+/* Drawer panel – same glass as header, just a bit denser for contrast */
+#sliding-menu{
+  position: fixed;
+  top: var(--header-h);
+  right: 0;
+  width: min(420px, 82vw);
+  height: calc(100dvh - var(--header-h));
+  padding: clamp(20px, 5vw, 32px);
+  color: var(--text);
+
+  /* ✨ frosted evergreen panel */
+  background: color-mix(in oklab, var(--evergreen) 35%, transparent);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border-left: 1px solid rgba(255,255,255,.08);
+  transform: translateX(100%);
+  transition: transform .32s cubic-bezier(.22,1,.36,1);
+  z-index: var(--z-drawer);
+}
+
+/* start state already defined in your #sliding-menu rule */
+#sliding-menu.is-open { transform: translateX(0); }
+
+
+/* optional: slightly dim links on hover for a soft change */
+#sliding-menu a:hover { color:#e8e8e8; }
+
+
+/* list styling inside the drawer — same feel as your personal site */
+#sliding-menu ul { list-style: none; margin: 0; padding: 0; }
+#sliding-menu ul li::marker { content: none; }
+#sliding-menu strong { color: var(--text); }
+#sliding-menu > ul > li {
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+#sliding-menu > ul > li > ul { margin-top: 10px; padding: 0; }
+#sliding-menu > ul > li > ul > li {
+  font-size: 18px; margin: 8px 0; font-weight: normal;
+  position: relative; padding-left: 1em; color: var(--text);
+}
+#sliding-menu > ul > li > ul > li::before {
+  content: "—"; display: inline-block; margin-right: 0.25em;
+}
+#sliding-menu a { color: rgb(252, 248, 237); text-decoration: none; }
+#sliding-menu a:hover { color: var(--brand-yellow); }
+
+/* Icons on sliding-menu links */
+#sliding-menu > ul > li > a{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;                 /* space between icon and text */
+}
+
+#sliding-menu > ul > li > a i{
+  font-size: 1.05em;         /* scale icon with text */
+  width: 1.15em;             /* reserve space so labels align vertically */
+  text-align: center;
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+
+/* overlay that fades in/out */
+#menu-overlay{
+  position: fixed;
+  left: 0; right: 0;
+  top: var(--header-h); bottom: 0;
+
+  background: color-mix(in oklab, #111 38%, transparent);
+  backdrop-filter: blur(3px) saturate(120%);
+  -webkit-backdrop-filter: blur(3px) saturate(120%);
+
+  z-index: var(--z-overlay);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .28s cubic-bezier(.22,1,.36,1), visibility 0s linear .28s;
+  will-change: opacity; /* smoother */
+}
+#menu-overlay.is-active{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .28s cubic-bezier(.22,1,.36,1);
+}
+
+body.nav-open{ overflow:hidden; }
+
+/*******************************
+ * 4) SECTIONS & DIVIDERS
+ *******************************/
+
+.section{
+  padding:var(--space-lg) 0;
+  scroll-margin-top: calc(var(--header-h) + 8px); /* anchor snap offset */
+}
+
+/*divider between sections */
+.section + .section{ border-top:none; position:relative; }
+.section + .section::before{
+  content:""; display:block;
+  height: var(--divider-h);
+  width: var(--divider-w);
+  margin: 0 auto var(--space);   /* center it */
+  border-radius: 999px;
+  background: var(--evergreen);
+}
+
+
+/*******************************
+ * 5) CARDS
+ *******************************/
+.card {
+  --card-border-width: 2px;
+  background: #fff;
+  border: var(--card-border-width) solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  box-shadow: var(--shadow);
+}
+
+.card--animated {
+  --card-border-width: 2px;
+  --card-border-angle: 0deg;
+  border-color: transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    conic-gradient(from var(--card-border-angle),
+      var(--brand-green),
+      var(--brand-yellow) 50%,
+      var(--brand-green)) border-box;
+  animation: cardBorderSpin var(--animation-speed) linear infinite;
+}
+
+@keyframes cardBorderSpin {
+  to { --card-border-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--animated {
+    animation: none;
+  }
+}
+
+
+/*******************************
+ * 6) EMBEDS (IG / EVENTBRITE / FORMS)
+ *******************************/
+.card.embed{ overflow:hidden; }           /* keep heavy iframes contained */
+.embed-target:empty{ display:none; }
+
+/* Default for generic iframes (NOT LightWidget) */
+.embed-target iframe:not(.lightwidget-widget){
+  width:100%;
+  height:520px;
+  border:0;
+  border-radius:12px;
+}
+
+/* LightWidget iframe: let its script manage the height */
+.lightwidget-widget{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+/* Eventbrite checkout iframe fix */
+#eventbrite-widget-container-1955113018669 {
+  min-height: 425px;      /* same as iframeContainerHeight in JS */
+}
+
+#eventbrite-widget-container-1955113018669 iframe {
+  width: 100%;
+  min-height: 425px;
+  border: 0;
+  border-radius: 12px;    /* matches your other embeds */
+}
+
+
+/* Google Form */
+#vendor-form{
+  width:100%;
+  height: var(--form-h-collapsed);  /* default: short */
+  border:0;
+}
+
+
+
+
+
+/*******************************
+ * 8) BUTTONS & CTAs
+ *******************************/
+.btn{
+  display:inline-block; border:0; cursor:pointer;
+  padding:10px 14px; border-radius:999px; font-weight:600;
+  background:var(--brand-green); color:#08301f; box-shadow:var(--shadow);
+}
+.btn:hover{ filter:brightness(.98); text-decoration:none; }
+.btn-outline{ background:transparent; color:var(--text); border:2px solid var(--border); }
+.cta-row {display: flex; justify-content: center; margin-top: 12px; }
+.cta-center{ display:flex; justify-content:center; margin-top:12px; }
+
+
+/*******************************
+ * 9) CONTACT LIST & FOOTER
+ *******************************/
+/* Contact icon row */
+.contact-icons{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:28px;
+  margin-top:12px;
+}
+.contact-icons a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:56px; height:56px;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--evergreen);
+  transition: transform .15s ease, color .15s ease, border-color .15s ease;
+}
+.contact-icons a i{ font-size:26px; line-height:1; }
+.contact-icons a:hover,
+.contact-icons a:focus-visible{
+  transform: translateY(-1px);
+  color: var(--brand-green);
+  border-color: color-mix(in oklab, var(--brand-green) 60%, var(--border));
+}
+
+/* Footer centred */
+.site-footer { text-align:center; padding: var(--space) 0; }
+.site-footer small { color: var(--text); }
+
+/*******************************
+ * 10) UTILITIES
+ *******************************/
+.hidden{ display:none !important; }
+.skip-link{ position:absolute; left:-9999px; }
+.skip-link:focus{
+  left:8px; top:8px; background:var(--brand-yellow); color:#2a2100;
+  padding:8px 12px; border-radius:6px;
+}
+
+

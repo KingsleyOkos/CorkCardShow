@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cork Card Show</title>
+  <meta name="description" content="Cork Card Show — events, vendors, and community." />
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="preload" href="./assets/img/logo.svg" as="image">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script defer src="./js/script.js"></script>
+  <script src="https://www.eventbrite.ie/static/widgets/eb_widgets.js"></script>
+  <script src="https://cdn.lightwidget.com/widgets/lightwidget.js" async></script>
+</head>
+<body>
+  <a class="skip-link" href="#about">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#index.html" aria-label="Cork Card Show home">
+      <img src="./assets/img/logo.svg" alt="Cork Card Show" class="logo" />
+    </a>
+    <ul class="menu">
+      <li>
+        <a href="#" id="hamburger-toggle" aria-label="Menu">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+
+<div id="sliding-menu" role="dialog" aria-modal="true" aria-label="Site Menu">
+  <ul>
+    <li>
+      <a href="index.html" id="menu-home">
+        <i class="fa-solid fa-house" aria-hidden="true"></i><span>Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="#eventbrite">
+        <i class="fa-solid fa-ticket" aria-hidden="true"></i><span>Buy Tickets</span>
+      </a>
+    </li>
+    <li>
+      <a href="#vendors">
+        <i class="fa-solid fa-dollar-sign" aria-hidden="true"></i><span>Vendors</span>
+      </a>
+    </li>
+    <li>
+      <a href="#contact">
+        <i class="fa-solid fa-phone" aria-hidden="true"></i><span>Contact</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div id="menu-overlay"></div>
+
+
+  <main id="top">
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="title-center">About Us</h2>
+        <p id="about-text" class="text-center">About text loads from data/content.json.</p>
+        <p class="cta-row"><a id="cta-follow-ig" class="btn center-block" href="#" target="_blank" rel="noopener">Hello World</a></p>
+      </div>
+    </section>
+
+    <section id="instagram" class="section">
+    <div class="container">
+        <h2 class="title-center">Latest From Instagram</h2>
+        <div class="card card--animated">
+      <div id="instagram-embed" class="embed-target"></div>
+    </div>
+  </div>
+    </section>
+
+
+
+    <section id="eventbrite" class="section">
+    <div class="container">
+        <h2 class="title-center">Tickets</h2>
+
+
+        <div class="card card--animated embed">
+        <!-- Container for Eventbrite widget -->
+        <div id="eventbrite-widget-container-1955113018669" class="animated-border"></div>
+        </div>
+    </div>
+
+    <!-- Direct embed script -->
+    <script type="text/javascript">
+        var exampleCallback = function() {
+        console.log('Order complete!');
+        };
+
+        window.EBWidgets.createWidget({
+        // Required
+        widgetType: 'checkout',
+        eventId: '1955113018669',
+        iframeContainerId: 'eventbrite-widget-container-1955113018669',
+
+        // Optional
+        iframeContainerHeight: 425,
+        onOrderComplete: exampleCallback
+        });
+    </script>
+    </section>
+
+
+    <section id="vendors" class="section">
+      <div class="container">
+        <h2 class="title-center">Vendor Application</h2>
+            <div class="card card--animated">
+            <iframe id="vendor-form"
+                    class="animated-border"
+                    title="Vendor application form"
+                    loading="lazy"></iframe>
+            <p class="cta-center">
+                <a id="link-form" class="btn btn-outline" href="#" target="_blank" rel="noopener">Open form in a new tab</a>
+            </p>
+            </div>
+    </section>
+
+    <section id="contact" class="section">
+  <div class="container">
+    <h2 class="title-center">Contact us</h2>
+
+    <div class="contact-icons">
+      <a id="contact-email" href="#" aria-label="Email us">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </a>
+      <a id="contact-ig" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Cork Card Show</small>
+    </div>
+  </footer>
+</body>
+</html>

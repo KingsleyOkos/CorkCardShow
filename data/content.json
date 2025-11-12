@@ -1,0 +1,21 @@
+{
+  "about": "Insert long heartfelt about me text here :)",
+    "instagram": {
+        "profile": "https://instagram.com/corkcardshow",
+        "embedSrc": "//lightwidget.com/widgets/522994e2d1735407ae419c81c0acfefc.html",
+        "scriptSrc": "https://cdn.lightwidget.com/widgets/lightwidget.js"
+    },
+
+
+    "eventbrite": {
+    "url": "https://www.eventbrite.ie/e/cork-card-show-tickets-1955113018669",
+    "eventId": "1955113018669"
+    }
+,
+  "vendorForm": {
+    "embedSrc": "https://docs.google.com/forms/d/e/1FAIpQLSenPXp129__HNyk4vHScPMrTBFHJT2LgVBIp0XhxaYpwl6VHg/viewform?embedded=true"
+  },
+  "contact": {
+    "email": "CorkCardShow@gmail.com"
+  }
+}
