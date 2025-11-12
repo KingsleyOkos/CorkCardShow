@@ -174,6 +174,22 @@ a#hamburger-toggle i:active {
 #sliding-menu a { color: rgb(252, 248, 237); text-decoration: none; }
 #sliding-menu a:hover { color: var(--brand-yellow); }
 
+/* Icons on sliding-menu links */
+#sliding-menu > ul > li > a{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;                 /* space between icon and text */
+}
+
+#sliding-menu > ul > li > a i{
+  font-size: 1.05em;         /* scale icon with text */
+  width: 1.15em;             /* reserve space so labels align vertically */
+  text-align: center;
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+
 /* overlay that fades in/out */
 #menu-overlay{
   position: fixed;
