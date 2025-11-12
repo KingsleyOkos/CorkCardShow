@@ -70,7 +70,7 @@ const menuOverlay     = document.getElementById('menu-overlay');
 
 let menuOpen = false;
 let animating = false;
-const DURATION = 320; // keep in sync with CSS .32s
+const DURATION = 280; // keep in sync with CSS .32s
 
 function openMenu(){
   if (animating || menuOpen) return;

@@ -137,13 +137,12 @@ a#hamburger-toggle i:active {
   color: var(--text);
 
   /* ✨ frosted evergreen panel */
-  background: color-mix(in oklab, var(--evergreen) 50%, transparent);
+  background: color-mix(in oklab, var(--evergreen) 35%, transparent);
   backdrop-filter: blur(10px) saturate(120%);
   -webkit-backdrop-filter: blur(10px) saturate(120%);
   border-left: 1px solid rgba(255,255,255,.08);
-
   transform: translateX(100%);
-  transition: transform .32s cubic-bezier(.2,.8,.2,1);
+  transition: transform .32s cubic-bezier(.22,1,.36,1);
   z-index: var(--z-drawer);
 }
 
@@ -181,22 +180,22 @@ a#hamburger-toggle i:active {
   left: 0; right: 0;
   top: var(--header-h); bottom: 0;
 
-  background: color-mix(in oklab, var(--evergreen) 40%, transparent);
-  backdrop-filter: blur(10px) saturate(120%);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  background: color-mix(in oklab, #111 38%, transparent);
+  backdrop-filter: blur(3px) saturate(120%);
+  -webkit-backdrop-filter: blur(3px) saturate(120%);
 
   z-index: var(--z-overlay);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .32s ease, visibility 0s linear .32s; /* hide after fade */
+  transition: opacity .28s cubic-bezier(.22,1,.36,1), visibility 0s linear .28s;
   will-change: opacity; /* smoother */
 }
 #menu-overlay.is-active{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity .32s ease; /* no delay on show */
+  transition: opacity .28s cubic-bezier(.22,1,.36,1);
 }
 
 body.nav-open{ overflow:hidden; }
