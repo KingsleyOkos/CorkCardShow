@@ -62,21 +62,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toggleBtn  = document.getElementById('nav-toggle');
   const closeBtn   = document.getElementById('nav-close');
   const mobileNav  = document.getElementById('mobile-nav');
+  const overlay    = document.getElementById('nav-overlay');
 
   function openNav(){
+    if (!mobileNav || !toggleBtn) return;
     document.body.classList.add('nav-open');
     mobileNav.classList.add('is-open');
     toggleBtn.classList.add('is-open');
     toggleBtn.setAttribute('aria-expanded','true');
+    toggleBtn.setAttribute('aria-label','Close menu');
     mobileNav.setAttribute('aria-hidden','false');
+    overlay?.classList.add('is-active');
+    overlay?.setAttribute('aria-hidden','false');
     }
+    
 
   function closeNav(){
+    if (!mobileNav || !toggleBtn) return;
     document.body.classList.remove('nav-open');
     mobileNav.classList.remove('is-open');
     toggleBtn.classList.remove('is-open');
-    toggleBtn.setAttribute('aria-expanded','false');
+    toggleBtn.setAttribute('aria-label','Open menu');
     mobileNav.setAttribute('aria-hidden','true');
+    overlay?.classList.remove('is-active');
+    overlay?.setAttribute('aria-hidden','true');
+    toggleBtn.focus();
     }
 
   toggleBtn?.addEventListener('click', () => {
@@ -84,6 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     open ? closeNav() : openNav();
     });
   closeBtn?.addEventListener('click', closeNav);
+  overlay?.addEventListener('click', closeNav);
 
   // close on link click
   mobileNav?.addEventListener('click', (e) => {
