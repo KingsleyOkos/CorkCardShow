@@ -16,17 +16,21 @@
   --radius:16px;
   --shadow:0 6px 20px rgba(0,0,0,.06);
 
-  --maxw: 980px;
+  --maxw: 780px;
   --space: clamp(16px, 3vw, 28px);
   --space-lg: clamp(24px, 5vw, 40px);
 
   --h2: clamp(20px, 5vw, 28px);
   --p: clamp(15px, 2.6vw, 17px);
 
-  --header-h: 75px;                 /* header height — increase for bigger logo */
+  --header-h: 70px;                 /* header height — increase for bigger logo */
+  --z-header: 1000;
+  --z-drawer: 950;
+  --z-overlay: 900;
+
   --divider-h: 2px;                 /* section divider thickness */
   --divider-w: 80%;   /* set the divider length; tweak to taste */
-  --divider-speed: 7s;             /* divider animation speed */
+  --animation-speed: 5s;             /* divider animation speed */
   --form-h-collapsed: 520px;        /* short Google Form height */
 }
     @property --card-border-angle {
@@ -57,7 +61,7 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
  * 3) HEADER / NAV
  *******************************/
 .site-header{
-  position: sticky; top: 0; z-index: 10;
+  position: sticky; top: 0; z-index: var(--z-header);
   backdrop-filter: blur(8px) saturate(120%);
   background:
     color-mix(in oklab, var(--evergreen) 40%, transparent); /* dark mint glass */
@@ -87,114 +91,112 @@ h2{ font-size:var(--h2); margin:0 0 .75rem; }
 .logo{ height: calc(var(--header-h) - 10px); width:auto; border-radius: 50%; } /* bigger logo without growing header */
 .brand-name{ display:none; }
 
-.nav{ display:flex; gap:18px; flex-wrap:wrap; }
-.nav a{ padding:8px 12px; border-radius:999px; }
 
-/* Header nav colour override (optional) */
-.site-header .nav a,
-.site-header .nav a:visited {
-  color: var(--text);
+/* === Personal-site hamburger in Card Show header === */
+.site-header ul.menu { margin: 0; padding: 0; display:flex; align-items:center; }
+.site-header ul.menu li { margin: 0; list-style: none; }
+
+#hamburger-toggle {
+  margin-right: -10px;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  padding: 10px;            /* makes it easier to tap */
 }
-.site-header .nav a:hover,
-.site-header .nav a:focus-visible {
-  color: var(--brand-green);
-  text-decoration: none;
+#hamburger-toggle i {
+  font-size: 17px;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: var(--evergreen);
 }
-
-
-@media (max-width:420px){
-  :root{ --header-h: 72px; } /* auto-scales logo with header */
-  .nav a{ padding:6px 10px; }
+/* remove focus ring artifacts on the icon link (as per personal site) */
+a#hamburger-toggle:focus,
+a#hamburger-toggle:focus-visible,
+a#hamburger-toggle:active,
+a#hamburger-toggle i:focus,
+a#hamburger-toggle i:focus-visible,
+a#hamburger-toggle i:active {
+  outline: 0;
+  box-shadow: none;
+  -webkit-focus-ring-color: transparent;
+  outline-offset: 0;
 }
+#hamburger-toggle::-moz-focus-inner { border: 0; }
 
-/* --- Hamburger button--- */
-.hamburger{
-  display:none;           /* default: hidden */
-  width:40px; height:40px; border:0; background:transparent; padding:8px;
-  align-items:center; justify-content:center; cursor:pointer;
-}
-.hamburger .bar{
-  display:block; width:24px; height:2px; background:var(--text);
-  margin:4px 0; border-radius:2px; transition:transform .2s ease, opacity .2s ease;
-}
+/* The drawer should start **below** the sticky header */
+/* Drawer panel – same glass as header, just a bit denser for contrast */
+#sliding-menu{
+  position: fixed;
+  top: var(--header-h);
+  right: 0;
+  width: min(420px, 82vw);
+  height: calc(100dvh - var(--header-h));
+  padding: clamp(20px, 5vw, 32px);
+  color: #fff;
 
-/* transform to “X” when open */
-.hamburger.is-open .bar:nth-child(1){ transform: translateY(6px) rotate(45deg); }
-.hamburger.is-open .bar:nth-child(2){ opacity:0; }
-.hamburger.is-open .bar:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+  /* ✨ frosted evergreen panel */
+  background: color-mix(in oklab, var(--evergreen) 70%, transparent);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border-left: 1px solid rgba(255,255,255,.08);
 
-/* show hamburger on small screens, hide desktop nav */
-@media (max-width: 800px){
-  .nav{ display:none; }
-  .hamburger{ display:flex; }
-}
-
-/* --- Sliding mobile nav + overlay --- */
-.nav-overlay{
-  position:fixed; inset:0; z-index:40;
-  background: color-mix(in oklab, var(--evergreen) 22%, rgba(0,0,0,0.6));
-  backdrop-filter: blur(10px);
-  opacity:0; visibility:hidden; pointer-events:none;
-  transition: opacity .28s ease, visibility 0s linear .28s;
-}
-
-.nav-overlay.is-active{
-  opacity:1; visibility:visible; pointer-events:auto;
-  transition: opacity .28s ease;
-}
-
-.mobile-nav{
-    position:fixed; top:0; right:0; bottom:0; z-index:60;
-    display:flex; flex-direction:column;
-    width:min(360px, 82vw);
-    padding: clamp(20px, 5vw, 32px);
-    gap: clamp(24px, 6vh, 48px);
-    background: color-mix(in oklab, var(--evergreen) 88%, #050505);
-    color:#fff;
-
-    box-shadow: -18px 0 40px rgba(0,0,0,0.25);
-    border-radius: 16px 0 0 16px;
-    transform: translateX(110%);
-    visibility:hidden;
-    overflow-y:auto;
-    transition: transform .32s ease, visibility 0s linear .32s;
+  transform: translateX(100%);
+  transition: transform .32s cubic-bezier(.2,.8,.2,1);
+  z-index: var(--z-drawer);
 }
 
-.mobile-nav.is-open{
-    transform: translateX(0);
-    visibility:visible;
-    transition: transform .32s ease;
+/* start state already defined in your #sliding-menu rule */
+#sliding-menu.is-open { transform: translateX(0); }
+
+
+/* optional: slightly dim links on hover for a soft change */
+#sliding-menu a:hover { color:#e8e8e8; }
+
+
+/* list styling inside the drawer — same feel as your personal site */
+#sliding-menu ul { list-style: none; margin: 0; padding: 0; }
+#sliding-menu ul li::marker { content: none; }
+#sliding-menu strong { color: #fff; }
+#sliding-menu > ul > li {
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
 }
-
-.mobile-nav__top{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:16px;
+#sliding-menu > ul > li > ul { margin-top: 10px; padding: 0; }
+#sliding-menu > ul > li > ul > li {
+  font-size: 18px; margin: 8px 0; font-weight: normal;
+  position: relative; padding-left: 1em; color: #fff;
 }
-
-.mobile-logo{ height: calc(var(--header-h) - 20px); width:auto; }
-
-/* close button = same hamburger visual but white */
-.mobile-nav .hamburger.close .bar{ background:#fff; }
-
-.mobile-menu{
-    display:flex; flex-direction:column; gap:18px;
-  flex:1;
-  margin:0;
-  padding:0;
-  overflow-y:auto;
+#sliding-menu > ul > li > ul > li::before {
+  content: "—"; display: inline-block; margin-right: 0.25em;
 }
+#sliding-menu a { color: #fff; text-decoration: none; }
+#sliding-menu a:hover { color: #ccc; }
 
-.mobile-link{
-  color:#fff; text-decoration:none;
-  font-weight:700; letter-spacing:.2px;
-  font-size: clamp(20px, 5vw, 26px);
-  text-align:left;
+/* overlay that fades in/out */
+#menu-overlay{
+  position: fixed;
+  left: 0; right: 0;
+  top: var(--header-h); bottom: 0;
+
+  background: color-mix(in oklab, var(--evergreen) 40%, transparent);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+
+  z-index: var(--z-overlay);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .32s ease, visibility 0s linear .32s; /* hide after fade */
+  will-change: opacity; /* smoother */
 }
-
-.mobile-link:hover,
-.mobile-link:focus-visible{
-  color: var(--brand-green);
-  text-decoration:none;
+#menu-overlay.is-active{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .32s ease; /* no delay on show */
 }
 
 body.nav-open{ overflow:hidden; }
@@ -242,7 +244,7 @@ body.nav-open{ overflow:hidden; }
       var(--brand-green),
       var(--brand-yellow) 50%,
       var(--brand-green)) border-box;
-  animation: cardBorderSpin var(--divider-speed) linear infinite;
+  animation: cardBorderSpin var(--animation-speed) linear infinite;
 }
 
 @keyframes cardBorderSpin {
@@ -299,6 +301,9 @@ body.nav-open{ overflow:hidden; }
 }
 
 
+
+
+
 /*******************************
  * 8) BUTTONS & CTAs
  *******************************/
@@ -327,7 +332,5 @@ body.nav-open{ overflow:hidden; }
   left:8px; top:8px; background:var(--brand-yellow); color:#2a2100;
   padding:8px 12px; border-radius:6px;
 }
-
-
 
 

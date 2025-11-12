@@ -46,6 +46,13 @@ function loadLightWidget({ embedSrc, scriptSrc }) {
     document.head.appendChild(s);
   }
 }
+const headerEl = document.querySelector('.site-header');
+const syncHeaderVar = () => {
+  const h = headerEl?.offsetHeight || 70;
+  document.documentElement.style.setProperty('--header-h', `${h}px`);
+};
+syncHeaderVar();
+window.addEventListener('resize', syncHeaderVar);
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -58,53 +65,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     cfg = await res.json();
   } catch {}
 
-  // --- Mobile nav ---
-  const toggleBtn  = document.getElementById('nav-toggle');
-  const closeBtn   = document.getElementById('nav-close');
-  const mobileNav  = document.getElementById('mobile-nav');
-  const overlay    = document.getElementById('nav-overlay');
+  // --- Hamburger menu (ported to match personal site) ---
+const hamburgerToggle = document.getElementById('hamburger-toggle');
+const slidingMenu     = document.getElementById('sliding-menu');
+const menuOverlay     = document.getElementById('menu-overlay');
 
-  function openNav(){
-    if (!mobileNav || !toggleBtn) return;
-    document.body.classList.add('nav-open');
-    mobileNav.classList.add('is-open');
-    toggleBtn.classList.add('is-open');
-    toggleBtn.setAttribute('aria-expanded','true');
-    toggleBtn.setAttribute('aria-label','Close menu');
-    mobileNav.setAttribute('aria-hidden','false');
-    overlay?.classList.add('is-active');
-    overlay?.setAttribute('aria-hidden','false');
-    }
-    
+let menuOpen = false;
+let animating = false;
+const DURATION = 320; // keep in sync with CSS .32s
 
-  function closeNav(){
-    if (!mobileNav || !toggleBtn) return;
-    document.body.classList.remove('nav-open');
-    mobileNav.classList.remove('is-open');
-    toggleBtn.classList.remove('is-open');
-    toggleBtn.setAttribute('aria-label','Open menu');
-    mobileNav.setAttribute('aria-hidden','true');
-    overlay?.classList.remove('is-active');
-    overlay?.setAttribute('aria-hidden','true');
-    toggleBtn.focus();
-    }
+function openMenu(){
+  if (animating || menuOpen) return;
+  animating = true;
 
-  toggleBtn?.addEventListener('click', () => {
-    const open = mobileNav.classList.contains('is-open');
-    open ? closeNav() : openNav();
-    });
-  closeBtn?.addEventListener('click', closeNav);
-  overlay?.addEventListener('click', closeNav);
+  // icon -> X
+  const icon = hamburgerToggle.querySelector('i');
+  icon.style.transform = 'rotate(90deg)';
+  setTimeout(() => {
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+    icon.style.transform = 'rotate(0deg)';
+  }, 300);
 
-  // close on link click
-  mobileNav?.addEventListener('click', (e) => {
-    if (e.target.matches('.mobile-link')) closeNav();
-  });
+  // classes for transitions
+  slidingMenu.classList.add('is-open');
+  menuOverlay.classList.add('is-active');
+  document.body.classList.add('nav-open');
 
-  // close on ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) closeNav();
-  });
+  menuOpen = true;
+  setTimeout(() => { animating = false; }, DURATION);
+}
+
+function closeMenu(){
+  if (animating || !menuOpen) return;
+  animating = true;
+
+  const icon = hamburgerToggle.querySelector('i');
+  icon.style.transform = 'rotate(90deg)';
+  setTimeout(() => {
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+    icon.style.transform = 'rotate(0deg)';
+  }, 300);
+
+  slidingMenu.classList.remove('is-open');
+  menuOverlay.classList.remove('is-active');
+  document.body.classList.remove('nav-open');
+
+  menuOpen = false;
+  setTimeout(() => { animating = false; }, DURATION);
+}
+
+hamburgerToggle?.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (menuOpen) closeMenu(); else openMenu();
+});
+menuOverlay?.addEventListener('click', () => { if (menuOpen) closeMenu(); });
+document.querySelectorAll('#sliding-menu a')
+  .forEach(a => a.addEventListener('click', () => { if (menuOpen) closeMenu(); }));
+
+
 
 
   // About

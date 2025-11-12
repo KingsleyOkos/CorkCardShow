@@ -15,36 +15,30 @@
 <body>
   <a class="skip-link" href="#about">Skip to content</a>
 
-  <header class="site-header">
-    <div class="container header-inner">
-        <a class="brand" href="#top" aria-label="Cork Card Show home">
-        <img src="./assets/img/logo.svg" alt="Cork Card Show" class="logo" />
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="Cork Card Show home">
+      <img src="./assets/img/logo.svg" alt="Cork Card Show" class="logo" />
+    </a>
+    <ul class="menu">
+      <li>
+        <a href="#" id="hamburger-toggle" aria-label="Menu">
+          <i class="fa fa-bars" aria-hidden="true"></i>
         </a>
-        <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </button>
-    </div>
-  </header>
-
-  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
-
-  <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
-  <div class="mobile-nav__top">
-    <img src="./assets/img/logo.svg" alt="Cork Card Show" class="mobile-logo">
-    <button id="nav-close" class="hamburger close" aria-label="Close menu">
-      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-    </button>
+      </li>
+    </ul>
   </div>
+</header>
 
-  <nav class="mobile-menu" aria-label="Mobile">
-    <a href="#eventbrite" class="mobile-link">Buy Tickets</a>
-    <a href="#vendors"   class="mobile-link">Vendors</a>
-    <a href="#contact"   class="mobile-link">Contact</a>
-  </nav>
+
+<div id="sliding-menu" role="dialog" aria-modal="true" aria-label="Site Menu">
+  <ul>
+    <li><a href="#eventbrite">Buy Tickets</a></li>
+    <li><a href="#vendors">Vendors</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </div>
-
+<div id="menu-overlay"></div>
 
 
   <main id="top">
