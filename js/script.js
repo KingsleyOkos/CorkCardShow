@@ -162,10 +162,11 @@ document.getElementById('menu-home')?.addEventListener('click', hardHomeReset);
 
   // Contact
   if (cfg.contact?.email) {
-    const a = document.getElementById("contact-email");
-    a.href = `mailto:${cfg.contact.email}`;
-    a.textContent = cfg.contact.email;
-  }
+  const a = document.getElementById("contact-email");
+  a.href = `mailto:${cfg.contact.email}`;
+  a.setAttribute('aria-label', `Email ${cfg.contact.email}`);
+}
+
   if (cfg.contact?.phone) {
     const p = document.getElementById("contact-phone");
     p.href = `tel:${cfg.contact.phone.replace(/\s+/g,"")}`;

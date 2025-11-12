@@ -320,7 +320,37 @@ body.nav-open{ overflow:hidden; }
 /*******************************
  * 9) CONTACT LIST & FOOTER
  *******************************/
-.contact-list{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+/* Contact icon row */
+.contact-icons{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:28px;
+  margin-top:12px;
+}
+.contact-icons a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:56px; height:56px;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--evergreen);
+  transition: transform .15s ease, color .15s ease, border-color .15s ease;
+}
+.contact-icons a i{ font-size:26px; line-height:1; }
+.contact-icons a:hover,
+.contact-icons a:focus-visible{
+  transform: translateY(-1px);
+  color: var(--brand-green);
+  border-color: color-mix(in oklab, var(--brand-green) 60%, var(--border));
+}
+
+/* Footer centred */
+.site-footer { text-align:center; padding: var(--space) 0; }
+.site-footer small { color: var(--text); }
 
 /*******************************
  * 10) UTILITIES
